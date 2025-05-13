@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Ô Ăn Quan</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(6, 60px);
+      grid-template-rows: repeat(2, 60px);
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .cell {
+      background: #f7d794;
+      border: 2px solid #555;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cell.quan {
+      background: #f39c12;
+      grid-row: span 2;
+    }
+
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Trò chơi Ô Ăn Quan</h1>
+
+  <div id="game-board">
+    <!-- Ô dân người chơi 2 -->
+    <div class="cell" data-index="10"></div>
+    <div class="cell" data-index="9"></div>
+    <div class="cell" data-index="8"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="6"></div>
+
+    <!-- Ô quan bên phải -->
+    <div class="cell quan" data-index="11"></div>
+
+    <!-- Ô quan bên trái -->
+    <div class="cell quan" data-index="5"></div>
+
+    <!-- Ô dân người chơi 1 -->
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+  </div>
+
+  <div id="status">Lượt của Người chơi 1</div>
+
+  <script>
+    let board = [5,5,5,5,5,1,5,5,5,5,5,1];
+    let currentPlayer = 1;
+
+    function renderBoard() {
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(cell => {
+        const index = parseInt(cell.getAttribute('data-index'));
+        cell.innerText = board[index];
+      });
+
+      document.getElementById('status').innerText = `Lượt của Người chơi ${currentPlayer}`;
+    }
+
+    function handleClick(e) {
+      const index = parseInt(e.currentTarget.getAttribute('data-index'));
+      
+      // Kiểm tra xem có phải ô dân của người chơi không
+      const isPlayer1 = currentPlayer === 1 && index >= 0 && index <= 4;
+      const isPlayer2 = currentPlayer === 2 && index >= 6 && index <= 10;
+
+      if (!isPlayer1 && !isPlayer2) return;
+
+      if (board[index] === 0) return;
+
+      let stones = board[index];
+      board[index] = 0;
+
+      let i = index;
+      while (stones > 0) {
+        i = (i + 1) % 12;
+        board[i]++;
+        stones--;
+      }
+
+      // Đổi lượt chơi
+      currentPlayer = currentPlayer === 1 ? 2 : 1;
+
+      renderBoard();
+    }
+
+    document.querySelectorAll('.cell').forEach(cell => {
+      cell.addEventListener('click', handleClick);
+    });
+
+    renderBoard();
+  </script>
+</body>
+</html>
