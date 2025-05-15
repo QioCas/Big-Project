@@ -12,6 +12,7 @@
     padding: 8px;
     font-size: 16px;
 }
+
 #auth-form button, #toggle-auth {
     padding: 10px;
     background: #2d3436;
@@ -55,11 +56,10 @@ body {
     cursor: pointer;
     width: 60px;
     height: 60px; /* Ensure consistent cell size */
-    box-sizing: border-box;
 }
 
 .cell::after {
-    content: attr(data-stone-count); /* Display stone count */
+    content: attr(data-stone-count);
     position: absolute;
     bottom: 2px; /* Close to bottom edge */
     right: 2px; /* Close to right edge */
