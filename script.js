@@ -1,3 +1,140 @@
+// Biến xác thực
+let token = localStorage.getItem('token');
+let currentUser = null;
+
+// DOM Elements
+const authDiv = document.getElementById('auth');
+const gameDiv = document.getElementById('game');
+const authForm = document.getElementById('auth-form');
+const authTitle = document.getElementById('auth-title');
+const authSubmit = document.getElementById('auth-submit');
+const toggleAuth = document.getElementById('toggle-auth');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const usernameDisplay = document.getElementById('username-display');
+const winsDisplay = document.getElementById('wins');
+const coinsDisplay = document.getElementById('coins');
+const logoutButton = document.getElementById('logout');
+
+// URL Backend
+const API_URL = 'http://localhost:3000/api'; // Thay bằng URL Railway sau khi deploy
+
+// Kiểm tra trạng thái đăng nhập
+async function checkAuth() {
+    if (token) {
+        try {
+            const response = await fetch(`${API_URL}/user`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                currentUser = await response.json();
+                authDiv.style.display = 'none';
+                gameDiv.style.display = 'block';
+                updateUserInfo();
+                initializeGame();
+            } else {
+                localStorage.removeItem('token');
+                token = null;
+                showAuthForm();
+            }
+        } catch (error) {
+            console.error('Lỗi kiểm tra xác thực:', error);
+            showAuthForm();
+        }
+    } else {
+        showAuthForm();
+    }
+}
+
+function showAuthForm(isLogin = true) {
+    authDiv.style.display = 'block';
+    gameDiv.style.display = 'none';
+    authTitle.textContent = isLogin ? 'Đăng nhập' : 'Đăng ký';
+    authSubmit.textContent = isLogin ? 'Đăng nhập' : 'Đăng ký';
+    toggleAuth.textContent = isLogin ? 'Đăng ký' : 'Đăng nhập';
+    authForm.dataset.mode = isLogin ? 'login' : 'register';
+}
+
+// Xử lý form xác thực
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+    const isLogin = authForm.dataset.mode === 'login';
+    const endpoint = isLogin ? 'login' : 'register';
+
+    try {
+        const response = await fetch(`${API_URL}/${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            if (isLogin) {
+                token = data.token;
+                localStorage.setItem('token', token);
+                currentUser = data.user;
+                authDiv.style.display = 'none';
+                gameDiv.style.display = 'block';
+                updateUserInfo();
+                initializeGame();
+            } else {
+                alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                showAuthForm(true);
+            }
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Lỗi xác thực:', error);
+        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+    }
+});
+
+// Chuyển đổi đăng nhập/đăng ký
+toggleAuth.addEventListener('click', () => {
+    showAuthForm(authForm.dataset.mode !== 'login');
+});
+
+// Đăng xuất
+logoutButton.addEventListener('click', () => {
+    localStorage.removeItem('token');
+    token = null;
+    currentUser = null;
+    showAuthForm();
+});
+
+// Cập nhật thông tin người dùng
+function updateUserInfo() {
+    usernameDisplay.textContent = currentUser.username;
+    winsDisplay.textContent = currentUser.wins;
+    coinsDisplay.textContent = currentUser.coins;
+}
+
+// Cập nhật dữ liệu trò chơi
+async function updateGameData(wins, coins) {
+    try {
+        const response = await fetch(`${API_URL}/user`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ wins, coins })
+        });
+        if (response.ok) {
+            currentUser = await response.json();
+            updateUserInfo();
+        } else {
+            console.error('Lỗi cập nhật dữ liệu trò chơi');
+        }
+    } catch (error) {
+        console.error('Lỗi cập nhật dữ liệu:', error);
+    }
+}
+
+/////////////
 let scores = [0, 0]; // scores[0] là người chơi 1, scores[1] là người chơi 2
 let board = [5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0]; // Quan cells start at 0
 let quanStones = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]; // 1 = has Quan stone, 0 = no Quan stone

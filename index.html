@@ -1,36 +1,53 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Ô Ăn Quan</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ô Ăn Quan</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>Trò chơi Ô Ăn Quan</h2>
-  <div id="scores">
-    <p>Người chơi 1: <span id="score1">0</span> điểm</p>
-    <p>Người chơi 2: <span id="score2">0</span> điểm</p>
-  </div>
-  <div id="game-board">
-    <!-- Ô quan trái -->
-    <div class="cell quan" data-index="11"></div>
-    <!-- Hàng trên: ô dân người chơi 2 (từ 10 → 6) -->
-    <div class="cell" data-index="10"></div>
-    <div class="cell" data-index="9"></div>
-    <div class="cell" data-index="8"></div>
-    <div class="cell" data-index="7"></div>
-    <div class="cell" data-index="6"></div>
-    <!-- Ô quan phải -->
-    <div class="cell quan" data-index="5"></div>
-    <!-- Hàng dưới: ô dân người chơi 1 (từ 0 → 4) -->
-    <div class="cell" data-index="0"></div>
-    <div class="cell" data-index="1"></div>
-    <div class="cell" data-index="2"></div>
-    <div class="cell" data-index="3"></div>
-    <div class="cell" data-index="4"></div>
-  </div>
-  <div id="stones-in-hand">Sỏi trên tay: 0</div>
-  <div id="message" style="margin-top: 10px;"></div>
-  <script src="script.js"></script>
+    <!-- Form đăng nhập/đăng ký -->
+    <div id="auth" style="display: none;">
+        <h2 id="auth-title">Đăng nhập</h2>
+        <form id="auth-form">
+            <input type="text" id="username" placeholder="Tên người dùng" required>
+            <input type="password" id="password" placeholder="Mật khẩu" required>
+            <button type="submit" id="auth-submit">Đăng nhập</button>
+        </form>
+        <button id="toggle-auth">Đăng ký</button>
+    </div>
+
+    <!-- Giao diện trò chơi -->
+    <div id="game" style="display: none;">
+        <div id="user-info">
+            <span id="username-display"></span> |
+            Thắng: <span id="wins">0</span> |
+            Xu: <span id="coins">0</span>
+            <button id="logout">Đăng xuất</button>
+        </div>
+        <div id="scores">
+            <span>Người chơi 1: <span id="score1">0</span></span>
+            <span>Người chơi 2: <span id="score2">0</span></span>
+        </div>
+        <div id="stones-in-hand">Sỏi trên tay: 0</div>
+        <div id="message"></div>
+        <div id="game-board">
+            <div class="cell quan" data-index="11"></div>
+            <div class="cell" data-index="10"></div>
+            <div class="cell" data-index="9"></div>
+            <div class="cell" data-index="8"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell quan" data-index="5"></div>
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

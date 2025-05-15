@@ -1,3 +1,37 @@
+#auth {
+    max-width: 300px;
+    margin: 50px auto;
+    text-align: center;
+}
+#auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#auth-form input {
+    padding: 8px;
+    font-size: 16px;
+}
+#auth-form button, #toggle-auth {
+    padding: 10px;
+    background: #2d3436;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+#user-info {
+    margin: 20px 0;
+    font-size: 16px;
+}
+#logout {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background: #d63031;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
 body {
     font-family: sans-serif;
     text-align: center;
