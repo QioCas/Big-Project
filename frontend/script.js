@@ -17,7 +17,7 @@ const coinsDisplay = document.getElementById('coins');
 const logoutButton = document.getElementById('logout');
 
 // URL Backend
-const API_URL = 'http://localhost:3000/api'; // Thay bằng URL Railway sau khi deploy
+const API_URL = 'http://localhost:3000/api'; /  
 
 // Kiểm tra trạng thái đăng nhập
 async function checkAuth() {
