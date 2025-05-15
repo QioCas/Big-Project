@@ -17,7 +17,7 @@
 // const logoutButton = document.getElementById('logout');
 
 // // URL Backend
-// const API_URL = 'https://o-an-quan-backend.up.railway.app/api'; 
+// const API_URL = 'https://big-project-production.up.railway.app/api'; 
 
 // // Kiểm tra trạng thái đăng nhập
 // async function checkAuth() {
@@ -414,7 +414,7 @@ const messageDiv = document.getElementById('message');
 const gameBoard = document.getElementById('game-board');
 
 // URL Backend
-const API_URL = 'https://o-an-quan-backend.up.railway.app/api'; 
+const API_URL = 'https://big-project-production.up.railway.app/api'; 
 
 // Biến trò chơi
 let board = [5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0]; // 12 ô, 0-4: Người chơi 1, 6-10: Người chơi 2, 5 và 11: Quan
