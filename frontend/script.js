@@ -365,11 +365,12 @@ document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('click', handleClick);
 });
 
+
 function initializeGame() {
     let choice;
-    do {
-        choice = prompt("Chọn điểm cho sỏi Quan (5 hoặc 10):", "5");
-    } while (choice !== "5" && choice !== "10");
+    // do {
+    //     choice = prompt("Chọn điểm cho sỏi Quan (5 hoặc 10):", "5");
+    // } while (choice !== "5" && choice !== "10");
     quanPointValue = parseInt(choice);
     board[5] = 0; // No civilian stones in Quan cells initially
     board[11] = 0;
