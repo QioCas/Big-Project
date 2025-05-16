@@ -155,14 +155,118 @@ function updateMessage(msg) {
     document.getElementById('message').innerText = msg;
 }
 
+function renderIndex(cell) {
+    const index = parseInt(cell.getAttribute('data-index'));
+    // Calculate total stone count (civilian + Quan value)
+    let stoneCount = board[index]; // Only civilian stones for rendering
+    let hasQuanStone = quanStones[index] === 1; // Check if quan stone is present
+    let quanValue = hasQuanStone ? quanPoints : 0; // Quan points if quan stone exists
+    cell.setAttribute('data-stone-count', (stoneCount + quanValue) > 0 ? (stoneCount + quanValue) : '');
+
+    // Clear existing stones
+    cell.innerHTML = ''; // Remove any previous stone elements
+
+    // Determine cell dimensions
+    const isQuan = cell.classList.contains('quan');
+    const cellWidth = 60; // Width is the same for all cells
+    const cellHeight = isQuan ? 125 : 60; // Quan cells are taller
+
+    // Center of the cell
+    let centerX = cellWidth / 2;
+    const centerY = cellHeight / 2;
+
+    if (isQuan && hasQuanStone) {
+        // Render quan cell with quan stone (large central circle + regular stones concentrated around it)
+        // Add the large central quan stone
+        const quanStone = document.createElement('div');
+        quanStone.classList.add('quan-stone'); // No animation
+        quanStone.style.left = `${centerX - 10}px`; // Center the 24px quan stone
+        quanStone.style.top = `${centerY - 10}px`; // Center vertically
+        
+        // Render regular stones concentrated around the quan stone (excluding center)
+        if (stoneCount > 0) {
+            const radius = Math.min(cellWidth, cellHeight) / 1.5; // Reduced radius to bring stones closer
+            
+            // Place extra stones closer to the center if any
+            for (let i = 0; i < stoneCount; i++) {
+                const stone = document.createElement('div');
+                stone.classList.add('stone'); // No animation
+                const smallRadius = radius / 2; // Half the radius for tighter clustering
+                const angle = (i / stoneCount) * 2 * Math.PI; // Evenly spaced
+                const posX = centerX + smallRadius * Math.cos(angle) - 3;
+                const posY = centerY + smallRadius * Math.sin(angle) - 3;
+                stone.style.left = `${posX}px`;
+                stone.style.top = `${posY}px`;
+                cell.appendChild(stone);
+            }
+        }
+        cell.appendChild(quanStone);
+    } else {
+        // Render as a regular cell (dân cell or quan cell without quan stone)
+        if (stoneCount >= 7) {
+            // Concentrated arrangement for 7 or more stones
+            const radius = Math.min(cellWidth, cellHeight) / 6; // Small radius for tight center clustering
+            for (let i = 0; i < stoneCount; i++) {
+                const stone = document.createElement('div');
+                stone.classList.add('stone'); // No animation
+                const angle = (i / stoneCount) * 2 * Math.PI; // Evenly spaced
+                const posX = centerX + radius * Math.cos(angle) - 3;
+                const posY = centerY + radius * Math.sin(angle) - 3;
+                stone.style.left = `${posX}px`;
+                stone.style.top = `${posY}px`;
+                cell.appendChild(stone);
+            }
+        } else if (stoneCount >= 4) {
+            // Circular arrangement for 4 to 6 stones
+            const radius = Math.min(cellWidth, cellHeight) / 3; // Standard radius
+            for (let i = 0; i < stoneCount; i++) {
+                const stone = document.createElement('div');
+                stone.classList.add('stone'); // No animation
+                const angle = (i / stoneCount) * 2 * Math.PI; // Evenly spaced
+                const posX = centerX + radius * Math.cos(angle) - 3;
+                const posY = centerY + radius * Math.sin(angle) - 3;
+                stone.style.left = `${posX}px`;
+                stone.style.top = `${posY}px`;
+                cell.appendChild(stone);
+            }
+        } else if (stoneCount > 0) {
+            // Grid-like or linear arrangement for 0 to 3 stones
+            const stoneSize = 12; // Stone diameter (including some spacing)
+            const maxCols = Math.floor(cellWidth / stoneSize); // Max stones per row
+            const stonesPerRow = Math.min(maxCols, Math.ceil(Math.sqrt(stoneCount))); // Aim for a square-ish grid
+
+            // Calculate starting position to center the grid
+            const totalWidth = stonesPerRow * stoneSize;
+            const totalHeight = Math.ceil(stoneCount / stonesPerRow) * stoneSize;
+            const startX = (cellWidth - totalWidth) / 2; // Center horizontally
+            const startY = (cellHeight - totalHeight) / 2; // Center vertically
+
+            // Generate stones in a grid pattern
+            for (let i = 0; i < stoneCount; i++) {
+                const stone = document.createElement('div');
+                stone.classList.add('stone'); // No animation
+
+                // Calculate row and column
+                const row = Math.floor(i / stonesPerRow);
+                const col = i % stonesPerRow;
+
+                // Calculate position
+                const posX = startX + col * stoneSize + stoneSize / 2 - 5; // Center the stone in its grid slot
+                const posY = startY + row * stoneSize + stoneSize / 2 - 5;
+
+                stone.style.left = `${posX}px`;
+                stone.style.top = `${posY}px`;
+                cell.appendChild(stone);
+            }
+        }
+    }
+}
+
+
 function renderBoard() {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
-        const index = parseInt(cell.getAttribute('data-index'));
-        // Set stone count for bottom-right display (civilian + Quan value)
-        let stoneCount = board[index] + quanPoints * quanStones[index];
-        cell.setAttribute('data-stone-count', stoneCount > 0 ? stoneCount : '');
-        cell.innerText = ''; // Clear innerText since ::after handles display
+        renderIndex(cell)
     });
 }
 
@@ -202,7 +306,6 @@ function getNextPos(i, direction, step = 1) {
         return (direction === 'left') ? (i + step) % 12 : (i - step + 12) % 12;
     }
 }
-
 async function checkAndDistributeStones() {
     let cellsToCheck = currentPlayer === 1 ? [0, 1, 2, 3, 4] : [6, 7, 8, 9, 10];
     const allEmpty = cellsToCheck.every(index => board[index] === 0);
@@ -216,14 +319,13 @@ async function checkAndDistributeStones() {
         for (let index of cellsToCheck) {
             board[index] = 1;
             scores[currentPlayer - 1]--;
-            updateScores()
+            updateScores();
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
             if (cell) {
-                cell.classList.add('drop-animation');
-                cell.setAttribute('data-stone-count', 1 > 0 ? 1 : '');
+                await renderIndex(cell); // Render with animation
                 await new Promise(resolve => setTimeout(resolve, 300)); // Wait for animation
-                cell.classList.remove('drop-animation');
             }
+
         }
         updateMessage(`Lượt của Người chơi ${currentPlayer}: Chọn một ô để di chuyển.`);
         return true;
@@ -367,27 +469,32 @@ document.querySelectorAll('.cell').forEach(cell => {
 
 
 async function initializeGame() {
+    renderBoard();
     currentPlayer = 1;
-    quanStones[5] = 1;
-    quanStones[11] = 1;
     scores[0] = scores[1] = 0;
     updateScores();
-    renderBoard();
     if (newGame == 1) {
-        let cells = [11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        board = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        quanStones = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        renderBoard();
+        quanStones[5] = 1;
+        quanStones[11] = 1;
+        let cells = [5, 0, 1, 2, 3, 4, 11, 6, 7, 8, 9, 10];
         for (let index of cells) {
-            board[index] = ((index == 5 | index == 11) ? 0 : 5);
+            board[index] = (index == 5 || index == 11) ? 0 : 5;
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
-            cell.classList.add('drop-animation');
-            cell.setAttribute('data-stone-count', 5);
+            if (cell) {
+                await renderIndex(cell); // Render with animation
+            }
             await new Promise(resolve => setTimeout(resolve, 300)); // Wait for animation
-            cell.classList.remove('drop-animation');
+
         }
         newGame = 0;
+    } else {
+        renderBoard(); // Render without animation for non-new games
     }
     updateMessage(`Lượt của Người chơi ${currentPlayer}: Chọn một ô để di chuyển.`);
 }
-
 async function calculation() {
     cell0 = [0, 1, 2, 3, 4];
     cell1 = [6, 7, 8, 9, 10];
@@ -420,7 +527,7 @@ async function calculation() {
 }
 function checkGameEnd() {
     if (quanStones[5] == 0 & quanStones[11] == 0 & board[5] == 0 && board[11] == 0) {
-        calculation();
+        // calculation();
         const winner = scores[0] > scores[1] ? 1 : scores[0] < scores[1] ? 2 : 0;
         let message = `Trò chơi kết thúc! Điểm: Người chơi 1: ${scores[0]}, Người chơi 2: ${scores[1]}`;
         if (winner) {
@@ -439,3 +546,101 @@ function checkGameEnd() {
     return false;
 }
 checkAuth();
+
+// ... (Previous code remains unchanged until event listeners)
+
+// Add drag-and-drop event listeners to all cells
+document.querySelectorAll('.cell').forEach(cell => {
+    cell.addEventListener('click', handleClick); // Keep click functionality
+    cell.addEventListener('dragstart', handleDragStart);
+    cell.addEventListener('dragover', handleDragOver);
+    cell.addEventListener('drop', handleDrop);
+    cell.addEventListener('dragend', handleDragEnd);
+});
+
+// Drag and Drop handlers
+let draggedIndex = -1;
+
+function handleDragStart(e) {
+    const index = parseInt(e.currentTarget.getAttribute('data-index'));
+    const isPlayer1 = currentPlayer === 1 && index >= 0 && index <= 4;
+    const isPlayer2 = currentPlayer === 2 && index >= 6 && index <= 10;
+
+    if (!isPlayer1 && !isPlayer2) return;
+    if (board[index] === 0) return;
+
+    draggedIndex = index;
+    e.dataTransfer.setData('text/plain', index); // Set the dragged index
+    highlightCell(index); // Highlight the dragged cell
+    highlightAdjacentCells(index); // Highlight adjacent cells as drop targets
+    updateMessage(`Kéo ô này vào ô bên cạnh (${getAdjacentCells(index).join(', ')}) để chọn hướng đi.`);
+}
+
+function handleDragOver(e) {
+    e.preventDefault(); // Necessary to allow drop
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    const dropIndex = parseInt(e.currentTarget.getAttribute('data-index'));
+    const adjacents = getAdjacentCells(draggedIndex);
+
+    if (draggedIndex === dropIndex) {
+        draggedIndex = -1;
+        highlightCell(-1); // Clear highlight
+        updateMessage(`Lượt của Người chơi ${currentPlayer}: Chọn một ô để di chuyển.`);
+        return;
+    }
+
+    if (!adjacents.includes(dropIndex)) return;
+
+    // Determine direction based on adjacent cell
+    let direction = '';
+    if (currentPlayer === 1) {
+        direction = dropIndex === (draggedIndex + 1) % 12 ? 'right' : 'left';
+    } else {
+        direction = dropIndex === (draggedIndex + 1) % 12 ? 'left' : 'right';
+    }
+
+    highlightCell(-1); // Clear highlights
+    moveStones(draggedIndex, direction); // Execute the move
+    draggedIndex = -1; // Reset dragged index
+}
+
+function handleDragEnd(e) {
+    highlightCell(-1); // Clear highlights when drag ends
+    if (draggedIndex !== -1) {
+        updateMessage(`Lượt của Người chơi ${currentPlayer}: Chọn một ô để di chuyển.`);
+    }
+    draggedIndex = -1; // Reset dragged index
+}
+
+// ... (Rest of the code remains unchanged, including renderIndex, moveStones, etc.)
+
+// Ensure cells are draggable in HTML (add this attribute to your cell elements)
+document.querySelectorAll('.cell').forEach(cell => {
+    cell.setAttribute('draggable', 'true');
+});
+document.querySelectorAll('.cell').forEach(cell => {
+    cell.addEventListener('dragenter', function(e) {
+        e.preventDefault();
+        if (getAdjacentCells(draggedIndex).includes(parseInt(this.getAttribute('data-index')))) {
+            this.classList.add('drag-over');
+        }
+    });
+
+    cell.addEventListener('dragleave', function(e) {
+        this.classList.remove('drag-over');
+    });
+
+    cell.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        if (getAdjacentCells(draggedIndex).includes(parseInt(this.getAttribute('data-index')))) {
+            this.classList.add('drag-over');
+        }
+    });
+
+    cell.addEventListener('drop', function(e) {
+        this.classList.remove('drag-over'); // Remove on drop
+    });
+});

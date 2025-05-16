@@ -58,21 +58,43 @@ body {
     height: 60px; /* Ensure consistent cell size */
 }
 
-.cell::after {
+.cell::after { 
     content: attr(data-stone-count);
     position: absolute;
-    bottom: 2px; /* Close to bottom edge */
-    right: 2px; /* Close to right edge */
-    font-size: 14px; /* Smaller for bottom-right fit */
+    bottom: 2px; 
+    right: 2px; 
+    font-size: 14px;
     color: #2d3436;
-    line-height: 1; /* Prevent extra spacing */
+    line-height: 1; 
     text-align: right;
 }
+/* Style for the stone elements */
+.stone {
+    width: 10px; /* Size of each stone */
+    height: 10px;
+    background-color: #a1a1a1; /* Default gray color for stones */
+    border-radius: 50%; /* Make them circular */
+    position: absolute; /* Position within the cell */
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add a slight shadow for depth */
+}
 
-.quan {
-    background: #fdcb6e;
-    grid-row: span 2;
-    height: 125px; /* Adjust for spanning 2 rows (60px * 2 + gap) */
+/* Variations for stones to add visual diversity */
+.stone:nth-child(odd) {
+    background-color: #8d5524; /* Brownish color for some stones */
+}
+
+.stone:nth-child(3n) {
+    background-color: #c68642; /* Lighter brown for others */
+}
+
+.stone:nth-child(5n) {
+    background-color: #d3d3d3; /* Light gray for variety */
+}
+
+/* Ensure cells can contain stones */
+.cell, .quan {
+    position: relative; /* Already set, but confirming */
+    overflow: visible; /* Allow stones to be visible if they slightly overlap */
 }
 
 .highlight {
@@ -110,4 +132,97 @@ body {
 
 .cell.drop-animation::after {
     animation: dropStone 0.3s ease-in-out;
+}
+
+.quan {
+    grid-row: span 2;
+    height: 125px; /* Maintain height to span 2 rows */
+    width: 60px; /* Match the width of other cells */
+    border: 2px solid #636e72;
+    background: #fdcb6e;
+    position: relative; /* For positioning pseudo-elements */
+    overflow: hidden; /* Ensures content stays within the boundary */
+}
+
+.quan-left {
+    border-radius: 50% 0% 0% 50%; /* Curves to the left */
+}
+
+.quan-right {
+    border-radius: 0% 50% 50% 0%; /* Curves to the right */
+}
+/* Stone count positioning - base style */
+.quan::after {
+    content: attr(data-stone-count);
+    position: absolute;
+    font-size: 14px;
+    color: #2d3436;
+    line-height: 1;
+    z-index: 2; /* Above the crescent effect */
+}
+
+/* Position for left quan (top-left corner) */
+.quan-left::after {
+    bottom: 5px; /* Distance from the top */
+    left: 5px; /* Distance from the left */
+    text-align: right; /* Align text to the left */
+}
+
+/* Position for right quan (bottom-right corner) */
+.quan-right::after {
+    top: 5px; /* Distance from the bottom */
+    left: 5px; /* Distance from the right */
+    text-align: left; /* Align text to the right */
+}
+/* Animation for placing stones */
+@keyframes dropStone {
+    0% {
+        transform: translateY(-10px); /* Smaller drop for bottom-right */
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.stone.drop-animation {
+    animation: dropStone 0.3s ease-in-out;
+}
+
+/* Remove the old animation rule for ::after */
+.cell.drop-animation::after {
+    animation: none; /* Disable the old animation */
+}
+/* Style for the large central quan stone (representing 5 points) */
+.quan-stone {
+    width: 24px; /* Larger size for the quan stone */
+    height: 24px;
+    background-color: #ff6b6b; /* Distinct color, e.g., red */
+    border-radius: 50%; /* Circular shape */
+    position: absolute;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Larger shadow for emphasis */
+    z-index: 3; /* Above regular stones */
+}
+
+/* Add drag feedback */
+.cell[draggable="true"] {
+    -webkit-user-select: none; /* Disable text selection while dragging */
+    user-select: none;
+}
+
+.cell.drag-over {
+    background-color: #74b9ff !important; /* Light blue when over a valid drop target */
+    transition: background-color 0.3s ease;
+}
+
+/* Ensure existing highlight styles work with drag */
+.highlight {
+    background-color: #74b9ff !important;
+    transition: background-color 0.3s ease;
+}
+
+.adjacent-highlight {
+    background-color: #ff7675 !important;
+    transition: background-color 0.3s ease;
 }
