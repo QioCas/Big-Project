@@ -2,7 +2,7 @@
   "name": "big-project",
   "version": "1.0.0",
   "description": "",
-  "main": "src/script.js",
+  "main": "script.js",
   "scripts": {
     "start": "node server.js"  
   },
