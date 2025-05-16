@@ -418,9 +418,9 @@ async function calculation() {
         }
     }
 }
-async function checkGameEnd() {
+function checkGameEnd() {
     if (quanStones[5] == 0 & quanStones[11] == 0 & board[5] == 0 && board[11] == 0) {
-        // calculation();
+        calculation();
         const winner = scores[0] > scores[1] ? 1 : scores[0] < scores[1] ? 2 : 0;
         let message = `Trò chơi kết thúc! Điểm: Người chơi 1: ${scores[0]}, Người chơi 2: ${scores[1]}`;
         if (winner) {
