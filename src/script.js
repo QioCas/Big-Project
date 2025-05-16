@@ -1,3 +1,4 @@
+
 // Biến xác thực
 let token = localStorage.getItem('token');
 let currentUser = null;
@@ -51,6 +52,20 @@ async function checkAuth() {
         showAuthForm();
     }
 }
+
+document.getElementById('login-tab').onclick = () => {
+    document.getElementById('auth-title').textContent = 'Đăng nhập';
+    document.getElementById('auth-submit').textContent = 'Đăng nhập';
+    document.getElementById('login-tab').classList.add('active');
+    document.getElementById('register-tab').classList.remove('active');
+};
+
+document.getElementById('register-tab').onclick = () => {
+    document.getElementById('auth-title').textContent = 'Đăng ký';
+    document.getElementById('auth-submit').textContent = 'Đăng ký';
+    document.getElementById('register-tab').classList.add('active');
+    document.getElementById('login-tab').classList.remove('active');
+};
 
 function showAuthForm(isLogin = true) {
     authDiv.style.display = 'block';
