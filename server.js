@@ -99,9 +99,8 @@ app.put('/api/user', authenticateToken, async (req, res) => {
     }
 });
 
-// Endpoint kiểm tra server
-app.get('/', (req, res) => {
-    res.send('Backend Ô Ăn Quan đang chạy!');
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "index.html"));
 });
 
 // Khởi động server
