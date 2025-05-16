@@ -1,76 +1,25 @@
 #auth {
-    width: 320px;
-    margin: 100px auto;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    color: white;
-    text-align: left;
-    position: relative;
+    max-width: 300px;
+    margin: 50px auto;
+    text-align: center;
 }
-
-/* Tabs */
-.auth-tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
-.auth-tabs .tab {
-    cursor: pointer;
-    padding-bottom: 6px;
-    color: #ccc;
-    font-weight: 500;
-}
-
-.auth-tabs .tab.active {
-    color: white;
-    border-bottom: 2px solid #ff4b7d;
-}
-
 #auth-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
-#auth-form label {
-    font-size: 14px;
-    margin-top: 5px;
-}
-
 #auth-form input {
-    padding: 10px;
+    padding: 8px;
     font-size: 16px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    background: transparent;
-    color: white;
-    outline: none;
 }
 
-#auth-form button {
-    margin-top: 15px;
-    padding: 12px;
-    background-color: #ff4b7d;
-    border: none;
+#auth-form button, #toggle-auth {
+    padding: 10px;
+    background: #2d3436;
     color: white;
-    font-weight: bold;
+    border: none;
     cursor: pointer;
-    border-radius: 5px;
 }
-
-#forgot-password {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    font-size: 13px;
-    color: #ccc;
-    text-decoration: none;
-}
-
 #user-info {
     margin: 20px 0;
     font-size: 16px;
