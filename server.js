@@ -34,7 +34,6 @@ const authenticateToken = (req, res, next) => {
         next();
     });
 };
-app.use(express.static(path.join(__dirname, "src")));
 
 // Endpoint đăng ký
 app.post('/api/register', async (req, res) => {
@@ -101,6 +100,7 @@ app.put('/api/user', authenticateToken, async (req, res) => {
 });
 
 const path = require("path");
+app.use(express.static(path.join(__dirname, "src")));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "index.html"));
