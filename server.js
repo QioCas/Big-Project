@@ -99,6 +99,8 @@ app.put('/api/user', authenticateToken, async (req, res) => {
     }
 });
 
+const path = require("path");
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "index.html"));
 });
