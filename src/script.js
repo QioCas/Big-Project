@@ -413,7 +413,7 @@ async function moveStones(index, direction, cont = 0) {
 
     highlightCell(-1); // Xoá highlight
     if (cont === 0) {
-        if(checkGameEnd() == false) {
+        if(await checkGameEnd() == false) {
             currentPlayer = currentPlayer === 1 ? 2 : 1;
             selectedIndex = -1;
     
@@ -496,38 +496,43 @@ async function initializeGame() {
     updateMessage(`Lượt của Người chơi ${currentPlayer}: Chọn một ô để di chuyển.`);
 }
 async function calculation() {
-    cell0 = [0, 1, 2, 3, 4];
-    cell1 = [6, 7, 8, 9, 10];
-    for(let index of cell0) {
+    const cell0 = [0, 1, 2, 3, 4];
+    const cell1 = [6, 7, 8, 9, 10];
+
+    // Animate stone removal for Player 1's cells
+    for (let index of cell0) {
         while (board[index] > 0) {
             highlightCell(index);
             board[index]--;
             scores[0]++;
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
-            cell.setAttribute('data-stone-count', board[index]);
-            renderBoard();
-            updateScores();
-            await new Promise(resolve => setTimeout(resolve, 300)); // Wait for animation
+            if (cell) {
+                renderIndex(cell); // Update with new stone count
+                updateScores();
+                await new Promise(resolve => setTimeout(resolve, 300)); // Wait for visual update
+            }
         }
     }
-    for(let index of cell1) {
+
+    // Animate stone removal for Player 2's cells
+    for (let index of cell1) {
         while (board[index] > 0) {
             highlightCell(index);
             board[index]--;
             scores[1]++;
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
-            cell.classList.add('drop-animation');
-            cell.setAttribute('data-stone-count', 5);
-    
-            await new Promise(resolve => setTimeout(resolve, 300)); // Wait for animation
-            cell.classList.remove('drop-animation');
-            updateScores();
+            if (cell) {
+                renderIndex(cell); // Update with new stone count
+                updateScores();
+                await new Promise(resolve => setTimeout(resolve, 300)); // Wait for visual update
+            }
         }
     }
+    highlightCell(-1);
 }
-function checkGameEnd() {
-    if (quanStones[5] == 0 & quanStones[11] == 0 & board[5] == 0 && board[11] == 0) {
-        // calculation();
+async function checkGameEnd() {
+    if (quanStones[5] == 0 && quanStones[11] == 0 && board[5] == 0 && board[11] == 0) {
+        await calculation(); // Wait for calculation animation to complete
         const winner = scores[0] > scores[1] ? 1 : scores[0] < scores[1] ? 2 : 0;
         let message = `Trò chơi kết thúc! Điểm: Người chơi 1: ${scores[0]}, Người chơi 2: ${scores[1]}`;
         if (winner) {
@@ -546,6 +551,7 @@ function checkGameEnd() {
     return false;
 }
 checkAuth();
+
 
 // ... (Previous code remains unchanged until event listeners)
 
