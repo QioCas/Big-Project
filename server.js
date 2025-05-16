@@ -34,6 +34,7 @@ const authenticateToken = (req, res, next) => {
         next();
     });
 };
+app.use(express.static(path.join(__dirname, "src")));
 
 // Endpoint đăng ký
 app.post('/api/register', async (req, res) => {
