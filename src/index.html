@@ -10,13 +10,19 @@
     hihi
     <!-- Form đăng nhập/đăng ký -->
     <div id="auth" style="display: none;">
+        <div class="auth-tabs">
+            <span id="login-tab" class="tab active">Đăng nhập</span>
+            <span id="register-tab" class="tab">Đăng ký</span>
+        </div>
         <h2 id="auth-title">Đăng nhập</h2>
         <form id="auth-form">
+            <label for="username">Tên người dùng</label>
             <input type="text" id="username" placeholder="Tên người dùng" required>
+            <label for="password">Mật khẩu</label>
             <input type="password" id="password" placeholder="Mật khẩu" required>
             <button type="submit" id="auth-submit">Đăng nhập</button>
         </form>
-        <button id="toggle-auth">Đăng ký</button>
+        <a href="#" id="forgot-password">Quên mật khẩu?</a>
     </div>
     
     <!-- Giao diện trò chơi -->
