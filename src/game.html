@@ -8,57 +8,6 @@
 </head>
 <body>
 
-    <!-- Giao diện trò chơi -->
-    <div id="game" style="display: none;">
-        <div id="user-info">
-            <span id="username-display"></span> |
-            Thắng: <span id="wins">0</span> |
-            Xu: <span id="coins">0</span>
-        </div>
-        <div id="stones-in-hand">Sỏi trên tay: 0</div>
-        <!-- Player 2: ô chứa ở góc trái trên -->
-        <div id="player2-container" class="score-container top-left">
-            <div class="score-label">Người chơi 2</div>
-            <div id="score2-display" class="score-box"></div>
-        </div>
-
-        <div id="game-board">
-            <div class="cell quan quan-left" data-index="11"></div>
-            <div class="cell" data-index="10"></div>
-            <div class="cell" data-index="9"></div>
-            <div class="cell" data-index="8"></div>
-            <div class="cell" data-index="7"></div>
-            <div class="cell" data-index="6"></div>
-            <div class="cell quan quan-right" data-index="5"></div>
-            <div class="cell" data-index="0"></div>
-            <div class="cell" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell" data-index="3"></div>
-            <div class="cell" data-index="4"></div>
-            
-            <!-- Player 1: ô chứa ở góc phải dưới -->
-            <div id="player1-container" class="score-container bottom-right">
-                <div class="score-label">Người chơi 1</div>
-                <div id="score1-display" class="score-box"></div>
-            </div>
-
-        </div>    
-    </div>
-
-    <button id="menu-button" class="menu-button">☰</button>
-
-    <!-- Hộp pop-up -->
-    <div id="popup-overlay" class="popup-overlay">
-
-    <div class="popup-box">
-        <button id="popup-close" class="popup-close">×</button>
-        <h2>Tùy chọn trò chơi</h2>
-        <button onclick="location.reload()">Chơi lại</button>
-        <button onclick="alert('Sẽ thêm hướng dẫn sau')">Hướng dẫn</button>
-        <button id="logout-button-popup">Đăng xuất</button>
-    </div>
-    </div>
-
     <script src="js/bot.js"></script>
     <script src="js/end-game.js"></script>
     <script src="js/game-logic.js"></script>

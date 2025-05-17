@@ -140,3 +140,9 @@ document.addEventListener('keydown', (e) => {
         popup.style.display = (popup.style.display === 'flex') ? 'none' : 'flex';
     }
 });
+
+// Hiển thị pop-up
+document.getElementById('popup-overlay').style.display = 'flex';
+
+// Ẩn pop-up
+document.getElementById('popup-overlay').style.display = 'none';

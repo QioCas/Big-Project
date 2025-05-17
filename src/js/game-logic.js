@@ -7,7 +7,7 @@ async function checkAndDistributeStones() {
             alert(`Người chơi ${currentPlayer} không đủ điểm để tiếp tục!`);
             announceWinner(currentPlayer == 1 ? 2 : 1);
             newGame = 1;
-            initGame();    
+            initGame();
 
             return false;
         }

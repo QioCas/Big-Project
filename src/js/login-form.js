@@ -6,7 +6,6 @@ let currentUser = null;
 const authDiv = document.getElementById('auth');
 const gameDiv = document.getElementById('game');
 const authForm = document.getElementById('auth-form');
-const authTitle = document.getElementById('auth-title');
 const authSubmit = document.getElementById('auth-submit');
 const toggleAuth = document.getElementById('toggle-auth');
 const usernameInput = document.getElementById('username');
@@ -30,7 +29,9 @@ async function checkAuth() {
                 authDiv.style.display = 'none';
                 gameDiv.style.display = 'block';
                 updateUserInfo();
-                initGame();
+                document.getElementById('waiting-room').style.display = 'flex';
+                document.getElementById('game').style.display = 'none';
+                document.getElementById('username-display').textContent = currentUser.username;
             } else {
                 localStorage.removeItem('token');
                 token = null;
@@ -46,54 +47,55 @@ async function checkAuth() {
 }
 
 function showAuthForm(isLogin = true) {
-    authDiv.style.display = 'block';
+    authDiv.style.display = 'flex';
     gameDiv.style.display = 'none';
-    authTitle.textContent = isLogin ? 'Đăng nhập' : 'Đăng ký';
     authSubmit.textContent = isLogin ? 'Đăng nhập' : 'Đăng ký';
     toggleAuth.textContent = isLogin ? 'Đăng ký' : 'Đăng nhập';
     authForm.dataset.mode = isLogin ? 'login' : 'register';
 }
 
 authForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = usernameInput.value;
-  const password = passwordInput.value;
-  const isLogin = authForm.dataset.mode === 'login';
-  const endpoint = isLogin ? 'login' : 'register';
+    e.preventDefault();
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+    const isLogin = authForm.dataset.mode === 'login';
+    const endpoint = isLogin ? 'login' : 'register';
 
-  try {
-    const response = await fetch(`${API_URL}/${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await response.json();
-
-    if (response.ok) {
-      if (isLogin) {
-        token = data.token;
-        localStorage.setItem('token', token);
-        currentUser = data.user;
-
-        // 👉 THÊM DÒNG NÀY: chuyển sang trang gameplay
-        window.location.href = "game.html";
-
-      } else {
-        alert('Đăng ký thành công! Vui lòng đăng nhập.');
-        showAuthForm(true);
-      }
-    } else {
-      alert(data.message);
+    try {
+        const response = await fetch(`${API_URL}/${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            if (isLogin) {
+                token = data.token;
+                localStorage.setItem('token', token);
+                currentUser = data.user;
+                authDiv.style.display = 'none';
+                gameDiv.style.display = 'block';
+                updateUserInfo();
+                document.getElementById('waiting-room').style.display = 'flex';
+                document.getElementById('game').style.display = 'none';
+                document.getElementById('username-display').textContent = currentUser.username;
+            } else {
+                alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                showAuthForm(true);
+            }
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Lỗi xác thực:', error);
+        alert('Có lỗi xảy ra. Vui lòng thử lại.');
     }
-  } catch (error) {
-    console.error('Lỗi xác thực:', error);
-    alert('Có lỗi xảy ra. Vui lòng thử lại.');
-  }
 });
 
 toggleAuth.addEventListener('click', () => {
     showAuthForm(authForm.dataset.mode !== 'login');
 });
+
 
 function updateUserInfo() {
     usernameDisplay.textContent = currentUser.username;
@@ -114,3 +116,23 @@ if (logoutPopupBtn) {
 }
 
 checkAuth();
+
+document.getElementById('play-btn').addEventListener('click', () => {
+  document.getElementById('waiting-room').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  initGame();
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('token');
+  location.reload();
+});
+
+document.getElementById('stats-btn').addEventListener('click', () => {
+  alert(`🏆 Thắng: ${currentUser.wins} trận\n💰 Coins: ${currentUser.coins}`);
+});
+
+document.getElementById('help-btn').addEventListener('click', () => {
+  alert("🎮 Luật chơi Ô Ăn Quan:\n- Rải sỏi theo chiều chọn.\n- Ăn sỏi để tích điểm.\n- Ai nhiều điểm hơn là thắng.");
+});
+
