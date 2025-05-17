@@ -8,46 +8,26 @@
 </head>
 <body>
     <!-- Form đăng nhập/đăng ký -->
-    <div id="auth" style="display: none;">
+    <div id="auth", style="display: none;">
+    <form id="auth-form">
         <h2 id="auth-title">Đăng nhập</h2>
-        <form id="auth-form">
-            <input type="text" id="username" placeholder="Tên người dùng" required>
-            <input type="password" id="password" placeholder="Mật khẩu" required>
-            <button type="submit" id="auth-submit">Đăng nhập</button>
-        </form>
-        <button id="toggle-auth">Đăng ký</button>
-    </div>
-    
-    <!-- Giao diện trò chơi -->
-    <div id="game" style="display: none;">
-        <div id="user-info">
-            <span id="username-display"></span> |
-            Thắng: <span id="wins">0</span> |
-            Xu: <span id="coins">0</span>
-            <button id="logout">Đăng xuất</button>
-        </div>
-        <div id="scores">
-            <span>Người chơi 1: <span id="score1">0</span></span>
-            <span>Người chơi 2: <span id="score2">0</span></span>
-        </div>
-        <div id="stones-in-hand">Sỏi trên tay: 0</div>
-        <div id="message"></div>
-        <div id="game-board">
-            <div class="cell quan quan-left" data-index="11"></div>
-            <div class="cell" data-index="10"></div>
-            <div class="cell" data-index="9"></div>
-            <div class="cell" data-index="8"></div>
-            <div class="cell" data-index="7"></div>
-            <div class="cell" data-index="6"></div>
-            <div class="cell quan quan-right" data-index="5"></div>
-            <div class="cell" data-index="0"></div>
-            <div class="cell" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell" data-index="3"></div>
-            <div class="cell" data-index="4"></div>
-        </div>    
+        <input type="text" id="username" placeholder="Tên đăng nhập" required />
+        <input type="password" id="password" placeholder="Mật khẩu" required />
+        <button type="submit" id="auth-submit">Đăng nhập</button>
+        <p><a href="#" id="toggle-auth">Đăng ký</a></p>
+    </form>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/bot.js"></script>
+    <script src="js/end-game.js"></script>
+    <script src="js/game-logic.js"></script>
+    <script src="js/highlight.js"></script>
+    <script src="js/interact.js"></script>
+    <script src="js/login-form.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/update-state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/valuable.js"></script>
+
 </body>
 </html>
