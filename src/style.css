@@ -7,12 +7,11 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   width: 320px;
   animation: fadeIn 0.4s ease;
 }
 
-/* Fade in */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -103,13 +102,6 @@ body {
     margin-top: 30px;
 }
 
-#game-board {
-    display: grid;
-    grid-template-columns: repeat(7, 60px);
-    grid-template-rows: repeat(2, 60px);
-    gap: 5px;
-    justify-content: center;
-}
 
 .cell {
     background: #ffeaa7;
@@ -459,3 +451,14 @@ body {
     border-radius: 6px;
     cursor: pointer;
 }
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(7, 60px);
+    grid-template-rows: repeat(2, 60px);
+    justify-content: center;
+    gap: 5px;
+    min-width: 300px;
+    z-index: 2; /* Đảm bảo nằm trên nền */
+}
+
