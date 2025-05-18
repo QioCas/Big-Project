@@ -12,7 +12,7 @@ function updateStonesInHand(stones) {
     document.getElementById('stones-in-hand').innerText = `Sỏi trên tay: ${stones}`;
 }
 
-async function updateGameData(wins, coins) {
+async function updateGameData(wins, totals) {
     try {
         const response = await fetch(`${API_URL}/user`, {
             method: 'PUT',
@@ -20,7 +20,7 @@ async function updateGameData(wins, coins) {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ wins, coins })
+            body: JSON.stringify({ wins, totals })
         });
         if (response.ok) {
             currentUser = await response.json();

@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     wins: { type: Number, default: 0 },
-    coins: { type: Number, default: 0 }
+    totals: { type: Number, default: 0 }
 });
 const User = mongoose.model('User', userSchema);
 
@@ -68,7 +68,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ message: 'Thông tin đăng nhập không hợp lệ' });
         }
         const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token, user: { username: user.username, wins: user.wins, coins: user.coins } });
+        res.json({ token, user: { username: user.username, wins: user.wins, totals: user.totals } });
     } catch (error) {
         res.status(500).json({ message: 'Lỗi server', error });
     }
@@ -87,10 +87,10 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 // Endpoint cập nhật dữ liệu trò chơi (bảo mật)
 app.put('/api/user', authenticateToken, async (req, res) => {
     try {
-        const { wins, coins } = req.body;
+        const { wins, totals } = req.body;
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            { wins, coins },
+            { wins, totals },
             { new: true }
         ).select('-password');
         res.json(user);

@@ -42,15 +42,17 @@ async function resolvePoints() {
 
 async function announceWinner(state) {
     if (state == 0) {
+        updateGameData(currentUser.wins, currentUser.totals + 1);
         alert("Trò chơi kết thúc! Kết quả hoà.");
         return;
     }
     if(state == 1) {
         alert("Trò chơi kết thúc! Người chơi thắng.");
-        updateGameData(currentUser.wins + 1, currentUser.coins + 10);
+        updateGameData(currentUser.wins + 1, currentUser.totals + 1);
     }
     if(state == 2) {
         alert("Trò chơi kết thúc! Người chơi thua.");
+        updateGameData(currentUser.wins, currentUser.totals + 1);
     }
 }
 

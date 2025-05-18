@@ -602,3 +602,74 @@ body {
 html {
     zoom: 1.5; /* Thu phóng 150% */
 }
+
+/* Toàn màn hình pop-up */
+.popup-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("img/background.jpg") no-repeat center center;
+    background-size: cover;
+    z-index: 999;
+}
+
+/* Hộp pop-up */
+.popup-box {
+    background: #ffffffee;
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    min-width: 300px;
+    animation: fadeIn 0.4s ease;
+}
+
+.popup-box h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Kết quả */
+#result {
+    font-size: 1.2em;
+    margin: 20px 0;
+    color: #2e7d32;
+    min-height: 24px;
+}
+
+/* Đếm ngược */
+#countdown {
+    font-size: 1.1em;
+    margin: 20px 0;
+    color: #d32f2f;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+/* Nút */
+.popup-buttons button {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #d32f2f;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.popup-buttons button:hover {
+    background-color: #b71c1c;
+}
+
+/* Hiệu ứng vào */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

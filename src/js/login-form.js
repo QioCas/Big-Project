@@ -12,7 +12,7 @@ const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const usernameDisplay = document.getElementById('username-display');
 const winsDisplay = document.getElementById('wins');
-const coinsDisplay = document.getElementById('coins');
+const totalsDisplay = document.getElementById('totals');
 
 // URL Backend
 const API_URL = 'https://big-project-production.up.railway.app/api'; 
@@ -80,9 +80,8 @@ authForm.addEventListener('submit', async (e) => {
                 updateUserInfo();
                 document.getElementById('waiting-room').style.display = 'flex';
                 document.getElementById('game').style.display = 'none';
-                document.getElementById('username-display').textContent = currentUser.username; // Cập nhật cái cũ
-                document.getElementById('username-display-1').textContent = currentUser.username; // Cập nhật cái mới 1
-                document.getElementById('username-display-2').textContent = currentUser.username; // Cập nhật cái mới 2 
+                document.getElementById('username-display').textContent = currentUser.username; 
+                alert("Đăng nhập thành công!");
            } else {
                 alert('Đăng ký thành công! Vui lòng đăng nhập.');
                 showAuthForm(true);
@@ -104,7 +103,7 @@ toggleAuth.addEventListener('click', () => {
 function updateUserInfo() {
     usernameDisplay.textContent = currentUser.username;
     winsDisplay.textContent = currentUser.wins;
-    coinsDisplay.textContent = currentUser.coins;
+    totalsDisplay.textContent = currentUser.totals;
 }
 
 
@@ -122,9 +121,7 @@ if (logoutPopupBtn) {
 checkAuth();
 
 document.getElementById('play-btn').addEventListener('click', () => {
-  document.getElementById('waiting-room').style.display = 'none';
-  document.getElementById('game').style.display = 'block';
-  initGame();
+    randomizePlayer();
 });
 
 document.getElementById('logout-btn').addEventListener('click', () => {
@@ -133,10 +130,20 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 });
 
 document.getElementById('stats-btn').addEventListener('click', () => {
-  alert(`🏆 Thắng: ${currentUser.wins} trận\n💰 Coins: ${currentUser.coins}`);
+  alert(`🏆 Thắng: ${currentUser.wins} trận`);
+
 });
 
 document.getElementById('help-btn').addEventListener('click', () => {
-  alert("🎮 Luật chơi Ô Ăn Quan:\n- Rải sỏi theo chiều chọn.\n- Ăn sỏi để tích điểm.\n- Ai nhiều điểm hơn là thắng.");
+  alert("🎮 Luật chơi Ô Ăn Quan:\n Ô ăn quan chơi trên bàn cờ có 12 ô nhỏ và 2 ô quan lớn.\n \
+Mỗi ô nhỏ có 5 sỏi, mỗi ô quan có 1 sỏi lớn (quan).\n \
+Hai người chơi luân phiên chọn ô nhỏ bên mình.\n \
+Lấy hết sỏi trong ô, rải từng viên vào ô tiếp theo.\n \
+Rải theo hoặc ngược chiều kim đồng hồ, tùy chọn.\n \
+Sỏi hết ở ô trống, ăn sỏi ô kế nếu có sỏi.\n \
+Mục tiêu: Thu nhiều sỏi, quan 10 điểm, sỏi nhỏ 1 điểm.\n \
+Trò chơi kết thúc khi hai ô quan hết sỏi.\n \
+Hết sỏi nhỏ, cấp lại 5 sỏi/ô, không đủ thì thua.\n \
+Người nhiều điểm thắng, cần chiến thuật tạo ô trống.");
 });
 

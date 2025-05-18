@@ -15,7 +15,6 @@
             <input type="password" id="password" placeholder="Mật khẩu" required>
             <button type="submit" id="auth-submit">Đăng nhập</button>
             <p><a href="#" id="toggle-auth">Đăng ký</a></p>
-
         </form>
     </div>
 
@@ -31,12 +30,24 @@
     </div>
 </div>
 
+
+<!-- Pop-up xác định người đi đầu -->
+    <div id="random-player-popup" class="popup-screen" style="display: none;">
+        <div class="popup-box">
+            <h2>Xác định Người đi đầu</h2>
+            <div id="result"></div>
+            <div id="countdown"></div>
+            <div class="popup-buttons">
+                <button id="back-btn" onclick="backToWaitingRoom()">Quay lại</button>
+            </div>
+        </div>
+    </div>
+
 <!-- Giao diện trò chơi -->
 <div id="game", style="display: none;">
     <div id="user-info", style="display: none;">
-        <span id="username-display"></span> |
         Thắng: <span id="wins">0</span> |
-        Xu: <span id="coins">0</span>
+        Tổng: <span id="totals">0</span>
     </div>
 
     <br>
@@ -55,6 +66,7 @@
         <div class="score-label">Bot</div>
         <div id="score2-display" class="score-box" data-stone-count="0"></div>
     </div>
+
     <div id="game-board">
         <div class="cell quan quan-left" data-index="11"></div>
         <div class="cell" data-index="10"></div>
@@ -85,13 +97,14 @@
             <button id="popup-close" class="popup-close">×</button>
             <h2>Tùy chọn trò chơi</h2>
             <div class="popup-buttons">
-                <button onclick="popup.style.display = 'none'; newGame++; initGame(); ">🎮 Chơi lại</button>
-                <button onclick="alert('Sẽ thêm hướng dẫn sau')">❓ Hướng dẫn</button>
+                <button onclick="popup.style.display = 'none'; newGame++; rpp.style.display = 'flex'; randomizePlayer(); game.style.display = 'none'">🎮 Chơi lại</button>
                 <button onclick="location.reload()">🚪 Trở về màn hình nền</button>
+
             </div>
         </div>
     </div>
     </div>
+    <script src="js/begin-game.js"></script>
     <script src="js/score-box.js"></script>
     <script src="js/bot.js"></script>
     <script src="js/end-game.js"></script>
