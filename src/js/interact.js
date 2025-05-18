@@ -47,6 +47,9 @@ function handleClick(e) {
         selectedIndex = index;
         highlightCell(index);
         highlightAdjacentCells(index);
+        // Thêm emoji 🫳
+        const cell = document.querySelector(`.cell[data-index="${index}"]`);
+        showEmoji(cell, '🫳');
     }
     // Step 2: Select an adjacent cell for direction
     else {
@@ -56,7 +59,11 @@ function handleClick(e) {
             highlightCell(-1); // Xoá highlight
             return;
         }
-        if (!adjacents.includes(index)) return;
+        if (!adjacents.includes(index)) {
+            selectedIndex = -1;
+            highlightCell(-1); // Xoá highlight
+            return;
+        }
 
         // Determine direction based on adjacent cell (DEBUG)
         let direction = '';
@@ -86,6 +93,9 @@ function handleDragStart(e) {
     e.dataTransfer.setData('text/plain', index); // Set the dragged index
     highlightCell(index); // Highlight the dragged cell
     highlightAdjacentCells(index); // Highlight adjacent cells as drop targets
+    // Thêm emoji 🫳
+    const cell = document.querySelector(`.cell[data-index="${index}"]`);
+    showEmoji(cell, '🫳');
 }
 
 function handleDragOver(e) {
@@ -103,7 +113,11 @@ function handleDrop(e) {
         return;
     }
 
-    if (!adjacents.includes(dropIndex)) return;
+    if (!adjacents.includes(dropIndex)) {
+        draggedIndex = -1;
+        highlightCell(-1); // Clear highlight
+        return;
+    }
 
     // Determine direction based on adjacent cell
     let direction = '';
@@ -119,7 +133,9 @@ function handleDrop(e) {
 }
 
 function handleDragEnd(e) {
-
+    draggedIndex = -1;
+    highlightCell(-1); // Clear highlight
+    e.preventDefault(); // Necessary to allow drop
 }
 
 const popup = document.getElementById('popup-overlay');

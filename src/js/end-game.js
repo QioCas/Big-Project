@@ -6,6 +6,9 @@ async function resolvePoints() {
     for (let index of cell0) {
         while (board[index] > 0) {
             highlightCell(index);
+            // Thêm emoji 🫳
+            const nextcell = document.querySelector(`.cell[data-index="${index}"]`);
+            showEmoji(nextcell, '🫳');
             board[index]--;
             scores[0]++;
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
@@ -21,6 +24,9 @@ async function resolvePoints() {
     for (let index of cell1) {
         while (board[index] > 0) {
             highlightCell(index);
+            const nextcell = document.querySelector(`.cell[data-index="${index}"]`);
+            showEmoji(nextcell, '🫳');
+
             board[index]--;
             scores[1]++;
             const cell = document.querySelector(`.cell[data-index="${index}"]`);

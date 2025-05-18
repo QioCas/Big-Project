@@ -31,7 +31,9 @@ async function checkAuth() {
                 updateUserInfo();
                 document.getElementById('waiting-room').style.display = 'flex';
                 document.getElementById('game').style.display = 'none';
-                document.getElementById('username-display').textContent = currentUser.username;
+                document.querySelectorAll('.username-display').forEach(span => {
+                    span.textContent = currentUser.username;
+                });
             } else {
                 localStorage.removeItem('token');
                 token = null;
@@ -78,8 +80,10 @@ authForm.addEventListener('submit', async (e) => {
                 updateUserInfo();
                 document.getElementById('waiting-room').style.display = 'flex';
                 document.getElementById('game').style.display = 'none';
-                document.getElementById('username-display').textContent = currentUser.username;
-            } else {
+                document.getElementById('username-display').textContent = currentUser.username; // Cập nhật cái cũ
+                document.getElementById('username-display-1').textContent = currentUser.username; // Cập nhật cái mới 1
+                document.getElementById('username-display-2').textContent = currentUser.username; // Cập nhật cái mới 2 
+           } else {
                 alert('Đăng ký thành công! Vui lòng đăng nhập.');
                 showAuthForm(true);
             }

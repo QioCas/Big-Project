@@ -462,3 +462,143 @@ body {
     z-index: 2; /* Đảm bảo nằm trên nền */
 }
 
+#game {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* min-height: 90vh; */
+    /* width: 100%;  */
+    /* max-width: 1100px; Giới hạn tối đa chiều rộng, tùy chỉnh theo thiết kế */
+    /* margin: 0 auto; Căn giữa theo chiều ngang */
+    /* position: relative; */
+
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("img/game.jpg"); /* hoặc link ảnh online */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; /* 🔥 dòng quan trọng để bao phủ nền */
+    z-index: 999;
+
+    /* overflow: hidden; Ngăn các phần tử con tràn ra ngoài */
+}
+
+/* Score container */
+.score-container {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Animation mượt mà */
+    opacity: 1; /* Mặc định rõ ràng */
+}
+
+.top-left {
+    top: 10px;
+    left: 10px;
+}
+
+.bottom-right {
+    bottom: 10px;
+    right: 10px;
+}
+
+/* Trạng thái ẩn: di chuyển nhỏ và làm mờ */
+.top-left.hidden {
+    transform: translate(-20px, -20px); /* Di chuyển nhỏ lên trên trái */
+    opacity: 0.2; /* Làm mờ */
+}
+
+.bottom-right.hidden {
+    transform: translate(20px, 20px); /* Di chuyển nhỏ xuống dưới phải */
+    opacity: 0.2; /* Làm mờ */
+}
+
+/* Score tab (phần lộ ra khi ẩn) */
+.score-tab {
+    position: absolute;
+    width: 20px;
+    height: 40px;
+    background: #f2994a; /* Màu cam */
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 11;
+    opacity: 0; /* Ẩn mặc định */
+    transition: opacity 0.3s ease;
+}
+
+.top-left .score-tab {
+    bottom: -40px; /* Lộ ra dưới box */
+    right: 10px;
+}
+
+.bottom-right .score-tab {
+    top: -40px; /* Lộ ra trên box */
+    left: 10px;
+}
+
+/* Hiển thị tab khi box ẩn */
+.top-left.hidden .score-tab,
+.bottom-right.hidden .score-tab {
+    opacity: 1; /* Tab rõ ràng khi box mờ */
+}
+
+/* Score box */
+.score-box {
+    width: 120px;
+    height: 120px;
+    background-color: #fff5dc;
+    border: 2px solid #d4a373;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.score-box::after {
+    content: attr(data-stone-count);
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+    padding: 2px 5px;
+}
+
+/* Animation khi cập nhật số sỏi */
+.score-box.updated::after {
+    animation: dropStone 0.3s ease-in-out;
+}
+/* Emoji container */
+.emoji-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    z-index: 5;
+    pointer-events: none; /* Ngăn emoji cản trở tương tác */
+    animation: fadeOut 0.4s ease forwards;
+}
+
+/* Animation cho emoji */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+}
+html {
+    zoom: 1.5; /* Thu phóng 150% */
+}

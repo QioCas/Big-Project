@@ -19,3 +19,16 @@ function getAdjacentCells(index) {
     }
     return adjacents;
 }
+// Thêm vào file utils.js hoặc tạo file mới effects.js
+function showEmoji(cell, emoji) {
+    const emojiDiv = document.createElement('div');
+    emojiDiv.className = 'emoji-overlay';
+    emojiDiv.textContent = emoji;
+    cell.appendChild(emojiDiv);
+    // Xóa emoji sau khi animation kết thúc
+    setTimeout(() => {
+        if (emojiDiv.parentNode) {
+            emojiDiv.parentNode.removeChild(emojiDiv);
+        }
+    }, 400);
+}

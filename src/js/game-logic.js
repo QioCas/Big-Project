@@ -15,7 +15,9 @@ async function checkAndDistributeStones() {
             board[index] = 1;
             scores[currentPlayer - 1]--;
             updateScores(currentPlayer);
+            
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
+            showEmoji(cell, '🫳');
             if (cell) {
                 await renderIndex(cell); // Render with animation
                 await new Promise(resolve => setTimeout(resolve, 300)); // Wait for animation
@@ -42,6 +44,9 @@ async function removeOneStoneFromCell(index, isQuan = false) {
 }
 
 async function animateEating(index) {
+    const cell = document.querySelector(`.cell[data-index="${index}"]`);
+    showEmoji(cell, '🫳');
+
     // Ăn Quan trước (nếu có)
     if (quanStones[index]) {
         quanStones[index] = 0;
@@ -53,6 +58,7 @@ async function animateEating(index) {
             const cell = document.querySelector(`.cell[data-index="${index}"]`);
             renderIndex(cell); // Update with new stone count
             updateScores(currentPlayer);
+            onPlayerEat(currentPlayer, scores[currentPlayer - 1]); // Gọi onPlayerEat
             await delay(300);
         }
         await removeOneStoneFromCell(index, true); // true: là Quan
@@ -67,7 +73,7 @@ async function animateEating(index) {
         updateScores(currentPlayer);
         const cell = document.querySelector(`.cell[data-index="${index}"]`);
         renderIndex(cell); // Update with new stone count
-
+        onPlayerEat(currentPlayer, scores[currentPlayer - 1]); // Gọi onPlayerEat
         await removeOneStoneFromCell(index, false); // false: là Dân
         await delay(300);
     }
@@ -84,6 +90,11 @@ async function moveStones(index, direction, cont = 0) {
     renderBoard();
     updateStonesInHand(stones);
     highlightCell(index);
+    if(cont != 0) {
+        const cell = document.querySelector(`.cell[data-index="${index}"]`);
+        showEmoji(cell, '🫳');
+    }
+
     await new Promise(resolve => setTimeout(resolve, 400));
     let i = index;
 
@@ -94,6 +105,9 @@ async function moveStones(index, direction, cont = 0) {
         stones--;
         renderBoard();
         highlightCell(i);
+        const cell = document.querySelector(`.cell[data-index="${i}"]`);
+        showEmoji(cell, '🫳');
+
         updateStonesInHand(stones);
         await new Promise(resolve => setTimeout(resolve, 400));
     }
@@ -118,6 +132,9 @@ async function moveStones(index, direction, cont = 0) {
                 next !== 5 &&
                 next !== 11
             ) {
+                highlightCell(next);
+                const nextCell = document.querySelector(`.cell[data-index="${next}"]`);
+                showEmoji(nextCell, '🤚');
                 // Check if next2 is a Quan cell
                 highlightCell(next2);
                 await animateEating(next2);
@@ -144,3 +161,4 @@ async function moveStones(index, direction, cont = 0) {
     }
     renderBoard();
 }
+
