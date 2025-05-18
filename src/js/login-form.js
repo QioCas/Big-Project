@@ -17,7 +17,14 @@ const totalsDisplay = document.getElementById('totals');
 // URL Backend
 const API_URL = 'https://big-project-production.up.railway.app/api'; 
 
-// Kiểm tra trạng thái đăng nhập
+/** Checks the authentication status of the user.
+ *
+ * Verifies the stored token by fetching user data from the API. If valid, displays the game
+ * screen and updates user info; otherwise, shows the authentication form.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when authentication check is complete.
+ */
 async function checkAuth() {
     if (token) {
         try {
@@ -48,6 +55,14 @@ async function checkAuth() {
     }
 }
 
+/** Displays the authentication form for login or registration.
+ *
+ * Shows the authentication form and configures it for either login or registration mode.
+ *
+ * Args:
+ *   isLogin (boolean, optional): If true, configures for login; otherwise, for registration.
+ *       Defaults to true.
+ */
 function showAuthForm(isLogin = true) {
     authDiv.style.display = 'flex';
     gameDiv.style.display = 'none';
@@ -99,7 +114,10 @@ toggleAuth.addEventListener('click', () => {
     showAuthForm(authForm.dataset.mode !== 'login');
 });
 
-
+/** Updates the displayed user information.
+ *
+ * Sets the username, wins, and total games played in the UI based on the current user's data.
+ */
 function updateUserInfo() {
     usernameDisplay.textContent = currentUser.username;
     winsDisplay.textContent = currentUser.wins;

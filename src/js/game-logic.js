@@ -1,3 +1,11 @@
+/** Checks and distributes stones when a player's cells are empty.
+ *
+ * If all cells of the current player are empty, either ends the game (if insufficient score)
+ * or distributes one stone to each cell from the player's score, with animations.
+ *
+ * Returns:
+ *   Promise<boolean>: True if the game continues, false if it ends.
+ */
 async function checkAndDistributeStones() {
     let cellsToCheck = currentPlayer === 1 ? [0, 1, 2, 3, 4] : [6, 7, 8, 9, 10];
     const allEmpty = cellsToCheck.every(index => board[index] === 0);
@@ -28,10 +36,18 @@ async function checkAndDistributeStones() {
     }
     return true;
 }
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
+/** Removes one stone from a cell with animation.
+ *
+ * Removes a single stone (or mandarin stone) from the specified cell and updates the UI.
+ *
+ * Args:
+ *   index (number): The index of the cell to remove a stone from.
+ *   isQuan (boolean, optional): If true, removes a mandarin stone. Defaults to false.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when the stone is removed.
+ */
 async function removeOneStoneFromCell(index, isQuan = false) {
     const cell = document.querySelector(`.cell[data-index="${index}"]`);
     if (!cell) return;
@@ -43,6 +59,17 @@ async function removeOneStoneFromCell(index, isQuan = false) {
     }
 }
 
+/** Animates the process of capturing stones from a cell.
+ *
+ * Handles capturing mandarin stones (if present) and small stones, updating scores and the UI
+ * with animations.
+ *
+ * Args:
+ *   index (number): The index of the cell to capture stones from.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when the capture animation is complete.
+ */
 async function animateEating(index) {
     const cell = document.querySelector(`.cell[data-index="${index}"]`);
     showEmoji(cell, '🫳');
@@ -81,6 +108,20 @@ async function animateEating(index) {
     renderBoard();
 }
 
+/** Executes a move by spreading and capturing stones.
+ *
+ * Spreads stones from the specified cell in the given direction, captures stones if possible,
+ * and updates the game state. Handles recursive moves and game end conditions.
+ *
+ * Args:
+ *   index (number): The index of the cell to start the move from.
+ *   direction (string): The direction to spread stones ('right' or 'left').
+ *   cont (number, optional): Indicates if the move is a continuation (1) or initial (0).
+ *       Defaults to 0.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when the move is complete.
+ */
 async function moveStones(index, direction, cont = 0) {
     if(cont == 0) {
         numberClick++;

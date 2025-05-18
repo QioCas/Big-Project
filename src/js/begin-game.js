@@ -2,7 +2,12 @@ const rpp = document.getElementById('random-player-popup');
 
 let countdownInterval = null;
 
-// Hàm hiển thị pop-up và tự động random
+/** Displays the popup to randomly select the first player and start a countdown.
+ *
+ * Hides the waiting room, shows the popup, randomly selects a player, and starts a 5-second
+ * countdown before initializing the game. Stores the selected player in `window.selectedPlayer`
+ * and sets `FirstMove` and `currentPlayer`.
+ */
 function randomizePlayer() {
     document.getElementById('waiting-room').style.display = 'none';
     document.getElementById('random-player-popup').style.display = 'flex';
@@ -11,7 +16,7 @@ function randomizePlayer() {
     if (countdownInterval) clearInterval(countdownInterval); // Hủy đếm ngược nếu có
 
     // Tự động random và đếm ngược
-    const players = ['Người chơi 1', 'Người chơi 2'];
+    const players = ['Player', 'Bot'];
     const randomIndex = Math.floor(Math.random() * players.length);
     const selectedPlayer = players[randomIndex];
     document.getElementById('result').textContent = `${selectedPlayer} đi đầu!`;
@@ -38,7 +43,10 @@ function randomizePlayer() {
     }, 1000);
 }
 
-// Hàm trở về màn hình chờ
+/** Returns to the waiting room screen.
+ *
+ * Clears the countdown interval, hides the popup and game screens, and shows the waiting room.
+ */
 function backToWaitingRoom() {
     if (countdownInterval) clearInterval(countdownInterval); // Hủy đếm ngược
     document.getElementById('random-player-popup').style.display = 'none';
@@ -46,7 +54,6 @@ function backToWaitingRoom() {
     document.getElementById('waiting-room').style.display = 'flex';
 }
 
-// Sự kiện phím Esc
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && document.getElementById('random-player-popup').style.display === 'flex') {
         backToWaitingRoom();

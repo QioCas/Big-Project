@@ -1,3 +1,12 @@
+/** Renders the score box with stones for a player.
+ *
+ * Clears the container and renders stones based on the score, using different layouts for
+ * different stone counts.
+ *
+ * Args:
+ *   container (HTMLElement): The DOM element to render stones in.
+ *   score (number): The number of stones to render.
+ */
 function renderScoreBox(container, score) {
     container.innerHTML = '';
 
@@ -76,7 +85,16 @@ function renderScoreBox(container, score) {
         }
     }
 }
-
+/** Renders the stones in a specific cell.
+ *
+ * Updates the cell's UI to display small stones and mandarin stones based on the board state.
+ *
+ * Args:
+ *   cell (HTMLElement): The DOM element representing the cell.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when rendering is complete.
+ */
 function renderIndex(cell) {
     const index = parseInt(cell.getAttribute('data-index'));
     let stoneCount = board[index]; 
@@ -167,7 +185,10 @@ function renderIndex(cell) {
     }
 }
 
-
+/** Renders the entire game board.
+ *
+ * Updates all cells on the board and resets the stones-in-hand display.
+ */
 function renderBoard() {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
@@ -177,6 +198,14 @@ function renderBoard() {
 
 }
 
+/** Initializes the game state and UI.
+ *
+ * Sets up the board, scores, and player turn, rendering the board with animations for new
+ * games or without for ongoing games. Starts the bot's turn if applicable.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when initialization is complete.
+ */
 async function initGame() {
     renderBoard();
     currentPlayer = FirstMove;

@@ -1,3 +1,11 @@
+
+/** Resolves remaining stones on the board at game end.
+ *
+ * Animates the collection of stones from each player's cells, adding them to their scores.
+ *
+ * Returns:
+ *   Promise<void>: Resolves when all stones are resolved.
+ */
 async function resolvePoints() {
     const cell0 = [0, 1, 2, 3, 4];
     const cell1 = [6, 7, 8, 9, 10];
@@ -40,6 +48,16 @@ async function resolvePoints() {
     highlightCell(-1);
 }
 
+/** Announces the winner of the game.
+ *
+ * Displays an alert with the game result (win, loss, or draw) and updates the user's game data.
+ *
+ * Args:
+ *   state (number): The game result (0 for draw, 1 for Player 1 win, 2 for Player 2 win).
+ *
+ * Returns:
+ *   Promise<void>: Resolves when the announcement is complete.
+ */
 async function announceWinner(state) {
     if (state == 0) {
         updateGameData(currentUser.wins, currentUser.totals + 1);
@@ -56,6 +74,14 @@ async function announceWinner(state) {
     }
 }
 
+/** Checks if the game has ended and resolves it if necessary.
+ *
+ * Checks if both mandarin cells are empty, resolves remaining points, determines the winner,
+ * and starts a new game.
+ *
+ * Returns:
+ *   Promise<boolean>: True if the game has ended, false otherwise.
+ */
 async function checkGameEnd() {
     if (quanStones[5] == 0 && quanStones[11] == 0 && board[5] == 0 && board[11] == 0) {
         await resolvePoints();

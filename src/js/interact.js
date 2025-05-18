@@ -30,6 +30,14 @@ document.querySelectorAll('.cell').forEach(cell => {
     });
 });
 
+/** Handles click events on a cell for selecting and moving stones.
+ *
+ * Allows the player to select a cell and then choose an adjacent cell to determine the move
+ * direction. Validates the player's turn and cell selection before executing the move.
+ *
+ * Args:
+ *   e (Event): The click event object containing the target cell's data-index.
+ */
 function handleClick(e) {
     if (numberClick > 0) {
         return;
@@ -77,6 +85,14 @@ function handleClick(e) {
     }
 }
 
+/** Handles the start of a drag event on a cell.
+ *
+ * Initiates dragging for a valid cell, highlights the cell and its adjacent cells, and displays
+ * an emoji. Validates the player's turn and cell contents.
+ *
+ * Args:
+ *   e (Event): The dragstart event object containing the target cell's data-index.
+ */
 function handleDragStart(e) {
     if (numberClick > 0) {
         return;
@@ -98,10 +114,25 @@ function handleDragStart(e) {
     showEmoji(cell, '🫳');
 }
 
+/** Handles the dragover event to allow dropping.
+ *
+ * Prevents the default behavior to enable dropping on valid cells.
+ *
+ * Args:
+ *   e (Event): The dragover event object.
+ */
 function handleDragOver(e) {
     e.preventDefault(); // Necessary to allow drop
 }
 
+/** Handles the drop event on a cell to execute a move.
+ *
+ * Validates the drop target as an adjacent cell, determines the move direction, and executes
+ * the move. Clears highlights and resets the dragged index.
+ *
+ * Args:
+ *   e (Event): The drop event object containing the target cell's data-index.
+ */
 function handleDrop(e) {
     e.preventDefault();
     const dropIndex = parseInt(e.currentTarget.getAttribute('data-index'));
@@ -132,6 +163,13 @@ function handleDrop(e) {
     draggedIndex = -1; // Reset dragged index
 }
 
+/** Handles the end of a drag event.
+ *
+ * Resets the dragged index and clears all highlights.
+ *
+ * Args:
+ *   e (Event): The dragend event object.
+ */
 function handleDragEnd(e) {
     draggedIndex = -1;
     highlightCell(-1); // Clear highlight
@@ -150,15 +188,12 @@ popupClose.addEventListener('click', () => {
     popup.style.display = 'none';
 });
 
-// Bấm ESC để mở hoặc đóng
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         popup.style.display = (popup.style.display === 'flex') ? 'none' : 'flex';
     }
 });
 
-// Hiển thị pop-up
 document.getElementById('popup-overlay').style.display = 'flex';
 
-// Ẩn pop-up
 document.getElementById('popup-overlay').style.display = 'none';
