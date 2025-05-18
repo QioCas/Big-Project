@@ -10,3 +10,4 @@ let currentPlayer = FirstMove;
 let quanPoints = 10; 
 let selectedIndex = -1;
 let draggedIndex = -1;
+let isFirstMove = true; // Đặt trong phạm vi toàn cục hoặc trong initGame

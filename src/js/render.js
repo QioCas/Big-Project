@@ -181,6 +181,7 @@ async function initGame() {
     renderBoard();
     currentPlayer = FirstMove;
     scores[0] = scores[1] = 0;
+    isFirstMove = 1;
     updateScores();
     if (newGame == 1) {
         board = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];

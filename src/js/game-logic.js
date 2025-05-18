@@ -119,7 +119,7 @@ async function moveStones(index, direction, cont = 0) {
     if (board[next] > 0 && next !== 5 && next !== 11) {
         // Nếu ô kế tiếp có quân và không phải ô quan → tiếp tục rải
         await moveStones(next, direction, 1);
-    } else if (board[next] === 0 && board[next2] > 0 && next !== 5 && next !== 11) {
+    } else if (board[next] === 0 && (board[next2] > 0 && (!isFirstMove || (next2 !== 5 && next2 !== 11))) && next !== 5 && next !== 11) {
         let currentPos = i;
 
         while (true) {
@@ -149,6 +149,7 @@ async function moveStones(index, direction, cont = 0) {
 
     highlightCell(-1); // Xoá highlight
     if (cont === 0) {
+        isFirstMove = 0;
         if(await checkGameEnd() == false) {
             currentPlayer = currentPlayer === 1 ? 2 : 1;
             selectedIndex = -1;
