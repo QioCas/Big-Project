@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Cài đặt dependencies
-npm install
+RUN npm install
 
 # Copy toàn bộ mã nguồn
 COPY . .
